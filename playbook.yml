@@ -1,0 +1,21 @@
+---
+- name: Docker
+  hosts: all
+  become: true
+  tasks:
+   - name: Update Cache
+     apt:
+       update_cache: yes
+   - name: Docker Installation
+     apt: 
+        name: docker.io
+        state: present
+   - name: Enable docker
+     service:
+        name: docker
+        state: started
+        enabled: true
+   - name: pulling the image from Dockerhub
+     command: docker pull surusuraj200021/suru:node
+   - name: run my image as docker  
+     command : docker run --name node --restart=always -d surusuraj200021/suru:node
