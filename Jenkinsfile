@@ -43,6 +43,9 @@ pipeline {
                     sh "terraform init"
                     sh "terraform apply -auto-approve -input=false"
                     sh "terraform output public_ip | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+' > ~/public"
+                    sh "terraform output -raw instance_id"
+                    sh "terraform output instance_id"
+                    sh "ls"
                     sh """
                         echo "all:" >> inventory.yml
                         echo "  hosts:" >> inventory.yml
