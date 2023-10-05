@@ -23,6 +23,8 @@ pipeline {
 
         stage('Application Build and push to DockerHub') {
             steps {
+                sh "export suru=suru"
+                sh "echo $suru"
                 git branch: 'main', url: 'https://github.com/Suru-Suraj/APPLICATION.git'
                 sh 'pwd'
                 sh 'ls'
