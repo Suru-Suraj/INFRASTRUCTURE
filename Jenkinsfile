@@ -70,7 +70,6 @@ pipeline {
                         sh "ls"
                         sh 'chmod 400 capstone.pem'
                         sh 'ansible --version'
-                        sh "ping $(head -n 1 ~/public)"
                         ansiblePlaybook disableHostKeyChecking: true, installation: 'ANSIBLE', inventory: 'inventory.yml', playbook: 'playbook.yml'
                     }
                     dir('AMI') {
