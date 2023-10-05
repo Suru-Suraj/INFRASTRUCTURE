@@ -23,18 +23,20 @@ pipeline {
 
         stage('Application Build and push to DockerHub') {
             steps {
-                sh "export suru=suru"
-                sh "echo $suru"
                 git branch: 'main', url: 'https://github.com/Suru-Suraj/APPLICATION.git'
-                sh 'pwd'
-                sh 'ls'
-                sh 'docker build -t surusuraj200021/suru:node .'
-                withCredentials([usernamePassword(credentialsId: 'DOCKER', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                script {
+                    sh "export suru=suru"
+                    sh "echo $suru"
+                    sh 'pwd'
+                    sh 'ls'
+                    sh 'docker build -t surusuraj200021/suru:node .'
+                    withCredentials([usernamePassword(credentialsId: 'DOCKER', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh """
                         echo \$PASSWORD | docker login -u \$USERNAME --password-stdin
                     """
+                    }
+                    sh "docker push surusuraj200021/suru:node"
                 }
-                sh "docker push surusuraj200021/suru:node"
             }
         }
 
