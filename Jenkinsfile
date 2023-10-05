@@ -6,7 +6,6 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('AWS')
         USERNAME             = credentials('DOCKER')
         PASSWORD             = credentials('DOCKER')
-        SOURCE_INSTANCE_ID   = sh(script: 'head -n 1 ~/instance', returnStdout: true).trim()
     }
 
     stages {
@@ -51,6 +50,7 @@ pipeline {
                         sh "terraform init"
                         sh "terraform apply -auto-approve -input=false"
                         sh "terraform output public_ip | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+' > ~/public"
+                        sh 'rm -rf ~/instance'
                         sh "terraform output -raw instance_id > ~/instance"
                         sh "cat ~/instance"
                         sh "terraform output instance_id"
@@ -76,7 +76,7 @@ pipeline {
                     dir('AMI') {
                         sh "cat ~/instance"
                         sh "terraform init"
-                        sh "terraform apply -auto-approve -input=false -var source_instance_id=$SOURCE_INSTANCE_ID"
+                        sh 'terraform apply -auto-approve -input=false -var source_instance_id=$(head -n 1 ~/instance)'
                         sh "terraform output -raw ami_id > ~/ami"
                     }
                     dir('Step-1') {
