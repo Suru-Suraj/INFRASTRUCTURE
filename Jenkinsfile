@@ -26,7 +26,7 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/Suru-Suraj/APPLICATION.git'
                 script {
                     sh "export suru=suru"
-                    sh "echo $suru"
+                    sh "echo ${suru}"
                     sh 'pwd'
                     sh 'ls'
                     sh 'docker build -t surusuraj200021/suru:node .'
