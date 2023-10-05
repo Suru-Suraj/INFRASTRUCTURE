@@ -9,21 +9,22 @@ pipeline {
     }
 
     stages {
-        stage('Checkout-1') {
+        stage('Checkout-Application') {
             steps {
                 git branch: 'main', url: 'https://github.com/Suru-Suraj/APPLICATION.git'
             }
         }
 
-        stage('Checkout-2') {
+        stage('Checkout-Infrastructure') {
             steps {
                 git branch: 'main', url: 'https://github.com/Suru-Suraj/INFRASTRUCTURE.git'
             }
         }
 
-        stage('Build') {
+        stage('Application Build and push to DockerHub') {
             steps {
                 git branch: 'main', url: 'https://github.com/Suru-Suraj/APPLICATION.git'
+                sh 'pwd'
                 sh 'docker build -t surusuraj200021/suru:node .'
                 withCredentials([usernamePassword(credentialsId: 'DOCKER', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh """
@@ -34,18 +35,22 @@ pipeline {
             }
         }
 
-        stage('Infrastructure') {
+        stage('Step-1 and Ansible') {
             steps {
                 git branch: 'main', url: 'https://github.com/Suru-Suraj/INFRASTRUCTURE.git'
                 script {
+                    sh "cd Step-1"
                     sh "aws configure set aws_access_key_id \$AWS_ACCESS_KEY_ID"
                     sh "aws configure set aws_secret_access_key \$AWS_SECRET_ACCESS_KEY"
                     sh "terraform init"
                     sh "terraform apply -auto-approve -input=false"
                     sh "terraform output public_ip | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+' > ~/public"
-                    sh "terraform output -raw instance_id"
+                    sh "terraform output -raw instance_id > ~/instance"
                     sh "terraform output instance_id"
                     sh "ls"
+                    sh "pwd"
+                    sh "cd -"
+                    sh "cd ANSIBLE"
                     sh """
                         echo "all:" >> inventory.yml
                         echo "  hosts:" >> inventory.yml
