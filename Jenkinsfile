@@ -38,7 +38,7 @@ pipeline {
             }
         }
 
-        stage('TERRAFORM-1') {
+        stage('TERRAFORM AND ANSIBLE') {
             steps {
                 git branch: 'main', url: 'https://github.com/Suru-Suraj/INFRASTRUCTURE.git'
                 script {
