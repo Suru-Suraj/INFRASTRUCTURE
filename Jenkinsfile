@@ -82,6 +82,11 @@ pipeline {
                     dir('Step-1') {
                         sh "terraform destroy -auto-approve -input=false"
                     }
+                    dir('CAPSTONE') {
+                        sh 'rm -rf ~/ami'
+                        sh "terraform init"
+                        sh 'terraform apply -auto-approve -input=false -var ami_id=$(head -n 1 ~/ami)'
+                    }
                 }
             }
         }
