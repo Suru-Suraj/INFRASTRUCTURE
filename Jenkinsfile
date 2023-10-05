@@ -6,6 +6,7 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('AWS')
         USERNAME             = credentials('DOCKER')
         PASSWORD             = credentials('DOCKER')
+        SOURCE_INSTANCE_ID   = sh(script: 'head -n 1 ~/instance', returnStdout: true).trim()
     }
 
     stages {
@@ -74,16 +75,9 @@ pipeline {
                     }
                     dir('AMI') {
                         sh "cat ~/instance"
-                        sh '''
-                            echo "variable \"source_instance_id\" {" >> var.tf
-                            echo "  description = \"The ID of the source AWS EC2 instance from which to create the AMI.\"" >> var.tf
-                            echo "  type        = string" >> var.tf
-                            echo "  default     = \"\$(cat ~/instance | head -n 1)\"" >> var.tf
-                            echo "}" >> var.tf
-                        '''
                         cat var.tf
                         sh "terraform init"
-                        sh "terraform apply -auto-approve -input=false"
+                        sh "terraform apply -auto-approve -input=false -var source_instance_id=$SOURCE_INSTANCE_ID"
                         sh "terraform output -raw ami_id > ~/ami"
                     }
                     dir('Step-1') {
