@@ -41,6 +41,7 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/Suru-Suraj/INFRASTRUCTURE.git'
                 script {
                     sh "cd Step-1"
+                    sh "ls"
                     sh "aws configure set aws_access_key_id \$AWS_ACCESS_KEY_ID"
                     sh "aws configure set aws_secret_access_key \$AWS_SECRET_ACCESS_KEY"
                     sh "terraform init"
