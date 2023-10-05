@@ -38,7 +38,7 @@ pipeline {
             }
         }
 
-        stage('Step-1 and Ansible') {
+        stage('TERRAFORM-1') {
             steps {
                 git branch: 'main', url: 'https://github.com/Suru-Suraj/INFRASTRUCTURE.git'
                 script {
@@ -67,7 +67,7 @@ pipeline {
                             echo "      ansible_ssh_private_key_file: capstone.pem" >> inventory.yml
                         '''
                         sh "cat inventory.yml"
-                        sh 'echo "$(cat ~/capstone1.pem)" >> ./capstone.pem'
+                        sh 'echo "$(cat ~/capstone.pem)" >> ./capstone.pem'
                         sh "ls"
                         sh 'chmod 400 capstone.pem'
                         sh 'ansible --version'
