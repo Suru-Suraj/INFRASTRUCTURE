@@ -32,14 +32,14 @@ variable "instance_ami" {
   default     = "ami-053b0d53c279acc90"
 }
 
-variable "instance_type" {
-  description = "Instance type for the EC2 instance"
-  type        = string
-  default     = "t2.micro"
-}
-
 variable "instance_key_name" {
   description = "Name of the EC2 key pair"
   type        = string
   default     = "capstone"
+}
+
+variable "instance_type" {
+  description = "Instance type for the EC2 instance"
+  type        = string
+  default     = "t2.micro"
 }

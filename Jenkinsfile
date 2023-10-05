@@ -25,8 +25,6 @@ pipeline {
             steps {
                 git branch: 'main', url: 'https://github.com/Suru-Suraj/APPLICATION.git'
                 script {
-                    sh "export suru=suru"
-                    sh "echo ${suru}"
                     sh 'pwd'
                     sh 'ls'
                     sh 'docker build -t surusuraj200021/suru:node .'
@@ -72,6 +70,19 @@ pipeline {
                         sh 'chmod 400 capstone.pem'
                         sh 'ansible --version'
                         ansiblePlaybook disableHostKeyChecking: true, installation: 'ANSIBLE', inventory: 'inventory.yml', playbook: 'playbook.yml'
+                    }
+                    dir('AMI') {
+                        sh '''
+                            echo "variable "source_instance_id" {" >> var.tf
+                            echo "  description = "The ID of the source AWS EC2 instance from which to create the AMI." >> var.tf
+                            echo "  type        = string" >> var.tf
+                            echo "  default     = "$(cat ~/instance)" >> var.tf
+                            echo "}" >> var.tf
+                        '''
+                        cat var.tf
+                        sh "terraform init"
+                        sh "terraform apply -auto-approve -input=false"
+                        sh "terraform output -raw ami_id > ~/ami"
                     }
                     dir('Step-1') {
                         sh "terraform destroy -auto-approve -input=false"
