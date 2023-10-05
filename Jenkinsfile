@@ -44,7 +44,7 @@ pipeline {
                 script {
                     sh "cd Step-1"
                     sh "ls"
-                    dir('Step-1') {
+                    dir('TERRAFORM') {
                         sh "aws configure set aws_access_key_id \$AWS_ACCESS_KEY_ID"
                         sh "aws configure set aws_secret_access_key \$AWS_SECRET_ACCESS_KEY"
                         sh "terraform init"
@@ -79,7 +79,7 @@ pipeline {
                         sh 'terraform apply -auto-approve -input=false -var source_instance_id=$(head -n 1 ~/instance)'
                         sh "terraform output -raw ami_id > ~/ami"
                     }
-                    dir('Step-1') {
+                    dir('TERRAFORM') {
                         sh "terraform destroy -auto-approve -input=false"
                     }
                     dir('CAPSTONE') {
