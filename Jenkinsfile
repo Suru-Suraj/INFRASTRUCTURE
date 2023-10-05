@@ -51,6 +51,7 @@ pipeline {
                         sh "terraform apply -auto-approve -input=false"
                         sh "terraform output public_ip | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+' > ~/public"
                         sh "terraform output instance_id > ~/instance"
+                        sh "cat ~/instance"
                         sh "terraform output instance_id"
                         sh "cp capstone.pem ~/capstone.pem"
                     }
@@ -76,7 +77,7 @@ pipeline {
                             echo 'variable "source_instance_id" {' >> var.tf
                             echo '  description = "The ID of the source AWS EC2 instance from which to create the AMI."' >> var.tf
                             echo '  type        = string' >> var.tf
-                            echo '  default     = $(cat ~/instance)' >> var.tf
+                            echo '  default     = $(head ~/instance)' >> var.tf
                             echo '}' >> var.tf
                         '''
                         cat var.tf
