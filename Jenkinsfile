@@ -62,7 +62,7 @@ pipeline {
                             echo "      ansible_ssh_private_key_file: capstone.pem" >> inventory.yml
                         '''
                         sh "cat inventory.yml"
-                        sh "sudo cp ~/capstone.pem ./"
+                        sh "sudo cp /var/lib/jenkins/capstone.pem/Step-1/capstone.pem ."
                         sh 'chmod 400 capstone.pem'
                         sh 'ansible --version'
                         ansiblePlaybook disableHostKeyChecking: true, installation: 'ANSIBLE', inventory: 'inventory.yml', playbook: 'playbook.yml'
