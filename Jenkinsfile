@@ -77,13 +77,13 @@ pipeline {
                         sh "cat ~/instance"
                         sh "terraform init"
                         sh 'terraform apply -auto-approve -input=false -var source_instance_id=$(head -n 1 ~/instance)'
+                        sh 'rm -rf ~/ami'
                         sh "terraform output -raw ami_id > ~/ami"
                     }
                     dir('TERRAFORM') {
                         sh "terraform destroy -auto-approve -input=false"
                     }
                     dir('CAPSTONE') {
-                        sh 'rm -rf ~/ami'
                         sh "terraform init"
                         sh 'terraform apply -auto-approve -input=false -var ami_id=$(head -n 1 ~/ami | grep -oP "ami-\\w+")'
                     }
