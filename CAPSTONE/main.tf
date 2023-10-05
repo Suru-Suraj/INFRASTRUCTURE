@@ -240,7 +240,7 @@ resource "aws_lb_target_group_attachment" "CAPSTONE" {
 # Create a launch template
 resource "aws_launch_template" "CAPSTONE" {
   name_prefix   = "CAPSTONE"
-  image_id      = var.ami_id
+  image_id     =  var.ami_id
   instance_type = var.instance_type
   vpc_security_group_ids = [aws_security_group.CAPSTONE.id]
   key_name = var.instance_key_name
