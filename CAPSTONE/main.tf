@@ -147,14 +147,6 @@ resource "aws_security_group" "CAPSTONE" {
     cidr_blocks      = ["0.0.0.0/0"]
   }
 
-  ingress {
-    description      = "Custom port 3000 from VPC"
-    from_port        = 3000
-    to_port          = 3000
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-  }
-
   egress {
     from_port        = 0
     to_port          = 0
@@ -168,24 +160,43 @@ resource "aws_security_group" "CAPSTONE" {
   }
 }
 
+# Create an EC2 key pair
+resource "aws_key_pair" "capstone" {
+  key_name   = var.instance_key_name
+  public_key = tls_private_key.capstone.public_key_openssh
+}
+
+# Create a TLS private key
+resource "tls_private_key" "capstone" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+# Create a local file containing the private key
+resource "local_file" "capstone" {
+  content  = tls_private_key.capstone.private_key_pem
+  filename = "capstone.pem"
+}
+
 # Create an EC2 instance
 resource "aws_instance" "CAPSTONE" {
   ami           = var.ami_id
   instance_type = var.instance_type
   vpc_security_group_ids = [aws_security_group.CAPSTONE.id]
   subnet_id = aws_subnet.PRIVATE.id
-  key_name = var.ssh_key_name
+  key_name = var.instance_key_name
 
   tags = {
     Name = "CAPSTONE-PUBLIC"
   }
 }
 
-# Create a Network load balancer
+# Create a Application load balancer
 resource "aws_lb" "CAPSTONE" {
   name               = "CAPSTONE"
   internal           = false
-  load_balancer_type = "network"
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.CAPSTONE.id]
   subnets            = [aws_subnet.PRIVATE.id, aws_subnet.PUBLIC-2.id, aws_subnet.PUBLIC-1.id]
   enable_cross_zone_load_balancing = true
   enable_deletion_protection = false
@@ -194,11 +205,11 @@ resource "aws_lb" "CAPSTONE" {
   }
 }
 
-# Create a listener for the NLB
+# Create a listener for the ALB
 resource "aws_lb_listener" "CAPSTONE" {
   load_balancer_arn = aws_lb.CAPSTONE.arn
-  port              = "3000"
-  protocol          = "TCP"
+  port              = "80"
+  protocol          = "HTTP"
 
   default_action {
     type             = "forward"
@@ -206,16 +217,16 @@ resource "aws_lb_listener" "CAPSTONE" {
   }
 }
 
-# Create a target group for the NLB
+# Create a target group for the ALB
 resource "aws_lb_target_group" "CAPSTONE" {
   name        = "CAPSTONE"
-  port        = 3000
-  protocol    = "TCP"
+  port        = 80
+  protocol    = "HTTP"
   vpc_id      = aws_vpc.CAPSTONE.id
   target_type = "instance"
   health_check {
-    port     = 3000
-    protocol = "TCP"
+    port     = 80
+    protocol = "HTTP"
   }
 }
 

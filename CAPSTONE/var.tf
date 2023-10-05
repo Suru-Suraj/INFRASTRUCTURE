@@ -32,10 +32,10 @@ variable "availability_zones" {
   ]
 }
 
-# SSH Key Name
-variable "ssh_key_name" {
-  description = "The name of the SSH key pair for instances."
-  default     = "suru"
+variable "instance_key_name" {
+  description = "Name of the EC2 key pair"
+  type        = string
+  default     = "capstone"
 }
 
 # Instance Type
@@ -47,5 +47,4 @@ variable "instance_type" {
 # AMI ID
 variable "ami_id" {
   description = "The ID of the Amazon Machine Image (AMI)."
-  default     = "ami-0ecfd7059ba9d96c7"
 }
