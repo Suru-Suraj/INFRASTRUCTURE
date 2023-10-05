@@ -6,7 +6,6 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('AWS')
         USERNAME             = credentials('DOCKER')
         PASSWORD             = credentials('DOCKER')
-        PATH = "/home/suru/.local/bin:$PATH"
     }
 
     stages {
