@@ -117,7 +117,7 @@ resource "tls_private_key" "capstone" {
 # Create a local file containing the private key
 resource "local_file" "capstone" {
   content  = tls_private_key.capstone.private_key_pem
-  filename = "capstone1.pem"
+  filename = "capstone.pem"
 }
 
 # Create an EC2 instance

@@ -35,7 +35,7 @@ variable "instance_ami" {
 variable "instance_key_name" {
   description = "Name of the EC2 key pair"
   type        = string
-  default     = "capstone1"
+  default     = "capstone"
 }
 
 variable "instance_type" {
