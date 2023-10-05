@@ -57,10 +57,11 @@ pipeline {
                             echo "all:" >> inventory.yml
                             echo "  hosts:" >> inventory.yml
                             echo "    capstone:" >> inventory.yml
-                            echo "      ansible_host: \$(head -n 1 ~/public)" >> inventory.yml
+                            echo "      ansible_host: $(head -n 1 ~/public)" >> inventory.yml
                             echo "      ansible_user: ubuntu" >> inventory.yml
                             echo "      ansible_ssh_private_key_file: capstone.pem" >> inventory.yml
                         """
+                        sh "cat inventory.yml"
                         sh "cp ~/capstone.pem ./"
                         sh 'chmod 400 capstone.pem'
                         sh 'ansible --version'
