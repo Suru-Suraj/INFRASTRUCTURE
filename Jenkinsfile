@@ -85,7 +85,7 @@ pipeline {
                     dir('CAPSTONE') {
                         sh 'rm -rf ~/ami'
                         sh "terraform init"
-                        sh "terraform apply -auto-approve -input=false -var ami_id=\$(head -n 1 ~/ami | grep -oP 'ami-\\w+') -var image_id=\$(head -n 1 ~/ami | grep -oP 'ami-\\w+')"
+                        sh "terraform apply -auto-approve -input=false -var ami_id=\$(head -n 1 ~/ami | grep -oP 'ami-\\w+')"
                     }
                 }
             }
