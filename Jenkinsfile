@@ -25,6 +25,7 @@ pipeline {
             steps {
                 git branch: 'main', url: 'https://github.com/Suru-Suraj/APPLICATION.git'
                 sh 'pwd'
+                sh 'ls'
                 sh 'docker build -t surusuraj200021/suru:node .'
                 withCredentials([usernamePassword(credentialsId: 'DOCKER', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh """
