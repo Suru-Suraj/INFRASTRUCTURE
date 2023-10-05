@@ -73,11 +73,11 @@ pipeline {
                     }
                     dir('AMI') {
                         sh '''
-                            echo "variable "source_instance_id" {" >> var.tf
-                            echo "  description = "The ID of the source AWS EC2 instance from which to create the AMI." >> var.tf
-                            echo "  type        = string" >> var.tf
-                            echo "  default     = "$(cat ~/instance)" >> var.tf
-                            echo "}" >> var.tf
+                            echo 'variable "source_instance_id" {' >> var.tf
+                            echo '  description = "The ID of the source AWS EC2 instance from which to create the AMI."' >> var.tf
+                            echo '  type        = string' >> var.tf
+                            echo '  default     = "$(cat ~/instance)' >> var.tf
+                            echo '}' >> var.tf
                         '''
                         cat var.tf
                         sh "terraform init"
