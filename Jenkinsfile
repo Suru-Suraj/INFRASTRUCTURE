@@ -27,7 +27,7 @@ pipeline {
                 script {
                     sh 'pwd'
                     sh 'ls'
-                    sh 'docker build -t surusuraj200021/suru:node .'
+                    sh 'docker build -t surusuraj200021/suru:1.0 .'
                     withCredentials([usernamePassword(credentialsId: 'DOCKER', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh """
                         echo \$PASSWORD | docker login -u \$USERNAME --password-stdin
