@@ -53,6 +53,7 @@ pipeline {
                         sh "cp capstone.pem ~/capstone.pem"
                     }
                     dir('ANSIBLE') {
+                        sh "pwd"
                         sh '''
                             echo "all:" >> inventory.yml
                             echo "  hosts:" >> inventory.yml
@@ -62,7 +63,7 @@ pipeline {
                             echo "      ansible_ssh_private_key_file: capstone.pem" >> inventory.yml
                         '''
                         sh "cat inventory.yml"
-                        sh 'echo "$(cat ~/capstone.pem)" >> capstone.pem'
+                        sh 'echo "$(cat ~/capstone.pem)" >> ./capstone.pem'
                         sh "ls"
                         sh 'chmod 400 capstone.pem'
                         sh 'ansible --version'
