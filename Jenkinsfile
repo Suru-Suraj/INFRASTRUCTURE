@@ -50,6 +50,7 @@ pipeline {
                     sh "terraform output instance_id"
                     sh "ls"
                     sh "pwd"
+                    sh "cp capstone.pem /var/lib/jenkins/workspace/capstone/ANSIBLE/"
                     sh "cd -"
                     sh "cd ANSIBLE"
                     sh """
@@ -63,6 +64,8 @@ pipeline {
                     sh 'chmod 400 capstone.pem'
                     sh 'ansible --version'
                     ansiblePlaybook disableHostKeyChecking: true, installation: 'ANSIBLE', inventory: 'inventory.yml', playbook: 'playbook.yml'
+                    sh "cd -"
+                    sh "cd Step-1"
                     sh "terraform destroy -auto-approve -input=false"
                 }
             }
