@@ -27,13 +27,13 @@ pipeline {
                 script {
                     sh 'pwd'
                     sh 'ls'
-                    sh 'docker build -t surusuraj200021/suru:1.0 .'
+                    sh 'docker build -t surusuraj200021/suru:caps .'
                     withCredentials([usernamePassword(credentialsId: 'DOCKER', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh """
                         echo \$PASSWORD | docker login -u \$USERNAME --password-stdin
                     """
                     }
-                    sh "docker push surusuraj200021/suru:node"
+                    sh "docker push surusuraj200021/suru:caps"
                 }
             }
         }
@@ -85,7 +85,7 @@ pipeline {
                     dir('CAPSTONE') {
                         sh 'rm -rf ~/ami'
                         sh "terraform init"
-                        sh "terraform apply -auto-approve -input=false -var ami_id=\$(head -n 1 ~/ami | grep -oP 'ami-\\w+')"
+                        sh "terraform apply -auto-approve -input=false -var ami_id=\$(head -n 1 ~/ami | grep -oP 'ami-\\w+') -var image_id=\$(head -n 1 ~/ami | grep -oP 'ami-\\w+')"
                     }
                 }
             }

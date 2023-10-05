@@ -18,4 +18,4 @@
    - name: pulling the image from Dockerhub
      command: docker pull surusuraj200021/suru:1.0
    - name: run my image as docker
-     command : docker run --name python -d -p 80:80 --restart=always surusuraj200021/suru:1.0
+     command : docker run --name python -d -p 80:80 --restart=always surusuraj200021/suru:caps
