@@ -77,6 +77,7 @@ pipeline {
                         sh "cat ~/instance"
                         sh "terraform init"
                         sh 'terraform apply -auto-approve -input=false -var source_instance_id=$(head -n 1 ~/instance)'
+                        sh "terraform output -raw ami_id"
                         sh 'rm -rf ~/ami'
                         sh "terraform output -raw ami_id > ~/ami"
                     }
