@@ -42,7 +42,6 @@ pipeline {
             steps {
                 git branch: 'main', url: 'https://github.com/Suru-Suraj/INFRASTRUCTURE.git'
                 script {
-                    sh "cd Step-1"
                     sh "ls"
                     dir('TERRAFORM') {
                         sh "aws configure set aws_access_key_id \$AWS_ACCESS_KEY_ID"

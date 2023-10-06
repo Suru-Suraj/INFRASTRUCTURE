@@ -187,7 +187,7 @@ resource "aws_instance" "CAPSTONE" {
   key_name = var.instance_key_name
 
   tags = {
-    Name = "CAPSTONE-PUBLIC"
+    Name = "CAPSTONE-PRIVATE"
   }
 }
 
